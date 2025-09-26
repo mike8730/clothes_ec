@@ -1,0 +1,64 @@
+<div class="item-new-wrapper">
+  <h1 class="form-header">商品出品</h1>
+
+  <%= form_with model: @item, local: true do |f| %>
+    <%# エラーメッセージ表示 %>
+    <%= render 'shared/error_messages', model: @item %>
+
+    <%# 商品の基本情報 %>
+    <div class="form-group">
+      <%= f.label :name, '商品名' %>
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description, '商品の説明' %>
+      <%= f.text_area :description, class: 'form-control', rows: 5 %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :category_id, 'カテゴリー' %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, { prompt: '選択してください' }, { class: 'form-control' } %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :gender_id, '性別' %>
+      <%= f.collection_select :gender_id, Gender.all, :id, :name, { prompt: '選択してください' }, { class: 'form-control' } %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :price, '基本価格' %>
+      <%= f.number_field :price, class: 'form-control' %>
+      <small class="form-text text-muted">バリエーションごとに価格が同じ場合は、こちらに設定してください。</small>
+    </div>
+
+    <hr>
+
+    <%# 商品バリエーション (SKU) %>
+    <h2 class="form-subheader">バリエーション設定</h2>
+    <div id="item-variants">
+      <%= f.fields_for :item_variants do |variant_form| %>
+        <%= render 'shared/item_variant_fields', f: variant_form %>
+      <% end %>
+    </div>
+
+    <div class="links">
+      <%# "data-association-insertion-node" と "data-association-insertion-method" は
+          JavaScriptが新しいフォームをどこに挿入するかを指定します。 %>
+      <%= link_to_add_association 'バリエーションを追加', f, :item_variants,
+          class: "btn btn-secondary",
+          data: {
+            association_insertion_node: '#item-variants',
+            association_insertion_method: 'append'
+          } %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit '出品する', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<%# JavaScriptで動的にフォームを追加・削除するために、cocoon gem の利用を推奨します。 %>
+<%# Gemfileに `gem 'cocoon'` を追加し、 `bundle install` を実行してください。 %>
+<%# app/javascript/application.js に `import "cocoon-js-vanilla";` を追加してください。 %>
