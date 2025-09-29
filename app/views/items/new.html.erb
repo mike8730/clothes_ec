@@ -38,7 +38,7 @@
     <h2 class="form-subheader">バリエーション設定</h2>
     <div id="item-variants">
       <%= f.fields_for :item_variants do |variant_form| %>
-        <%= render 'shared/item_variant_fields', f: variant_form %>
+        <%= render 'item_variant_fields', f: variant_form %>
       <% end %>
     </div>
 

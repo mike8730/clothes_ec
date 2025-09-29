@@ -5,6 +5,7 @@ class Item < ApplicationRecord
   validates :category_id, presence: true, numericality: { other_than: 0 }
   validates :gender_id, presence: true, numericality: { other_than: 0 }
 
+  extend ActiveHash::Associations::ActiveRecordExtensions
   has_many :item_variants
   belongs_to_active_hash :category
   belongs_to_active_hash :gender
