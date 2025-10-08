@@ -28,7 +28,7 @@
 ### Association
 - has_many :cart_items, through: :item_variants
 - has_many :order_items, through: :item_variants
-- has_many :item_variants
+- has_many :item_variants, inverse_of: :item
 - belongs_to_active_hash :category
 - belongs_to_active_hash :gender
 
