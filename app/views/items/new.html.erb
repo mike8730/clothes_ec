@@ -2,10 +2,10 @@
   <h1 class="form-header">商品出品</h1>
 
   <%= form_with model: @item_form, url: items_path, local: true do |f| %>
-    <%# エラーメッセージ表示 %>
+    <!-- エラーメッセージ -->
     <%= render 'shared/error_messages', model: @item_form %>
 
-    <%# 商品の基本情報 %>  
+    <!-- 基本情報 -->
     <div class="form-group">
       <%= f.label :name, '商品名' %>
       <%= f.text_field :name, class: 'form-control' %>
@@ -44,7 +44,7 @@
 
     <hr>
 
-    <%# 商品バリエーション (SKU) %>
+    <!-- バリエーション -->
     <h2 class="form-subheader">バリエーション設定</h2>
     <div id="item-variants">
       <%= f.fields_for :item_variants do |variant_form| %>
@@ -52,23 +52,19 @@
       <% end %>
     </div>
 
-    <div class="links">
-      <%# "data-association-insertion-node" と "data-association-insertion-method" は
-          JavaScriptが新しいフォームをどこに挿入するかを指定します。 %>
-      <%= link_to_add_association 'バリエーションを追加', f, :item_variants,
-          class: "btn btn-secondary",
-          data: {
-            association_insertion_node: '#item-variants',
-            association_insertion_method: 'append'
-          } %>
+    <!-- 追加用テンプレート -->
+    <div id="item-variant-template" style="display:none;">
+      <%= f.fields_for :item_variants, ItemVariant.new, child_index: "NEW_RECORD" do |vf| %>
+        <%= render 'item_variant_fields', f: vf %>
+      <% end %>
     </div>
 
-    <div class="form-actions">
+    <div class="links mt-3">
+      <button type="button" id="add-variant" class="btn btn-outline-primary">＋ バリエーションを追加</button>
+    </div>
+
+    <div class="form-actions mt-4">
       <%= f.submit '出品する', class: 'btn btn-primary' %>
     </div>
   <% end %>
 </div>
-
-<%# JavaScriptで動的にフォームを追加・削除するために、cocoon gem の利用を推奨します。 %>
-<%# Gemfileに `gem 'cocoon'` を追加し、 `bundle install` を実行してください。 %>
-<%# app/javascript/application.js に `import "cocoon-js-vanilla";` を追加してください。 %>
