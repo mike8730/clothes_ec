@@ -5,14 +5,14 @@ class ItemsController < ApplicationController
   end
 
   def new
-     @item = Item.new
-     # フォームの初期状態でバリエーション入力欄を1つ表示するために build します。
-     @item.item_variants.build
+     @item_form = ItemForm.new
+     @item_form.item_variants_attributes = { "0" => { size_id: "", color_id: "", stock_quantity: "", price: "" } }
   end
 
   def create
-    @item = Item.new(item_params)
-    if @item.save
+    @item_form = ItemForm.new(item_params.except(:item_variants_attributes))
+    @item_form.item_variants_attributes = item_params[:item_variants_attributes]
+    if @item_form.save
       redirect_to root_path, notice: '商品を出品しました。'
     else
       render :new, status: :unprocessable_entity
@@ -22,7 +22,7 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(
+    params.require(:item_form).permit(
       :name,
       :price,
       :description,

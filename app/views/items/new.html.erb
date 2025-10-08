@@ -1,9 +1,9 @@
 <div class="item-new-wrapper">
   <h1 class="form-header">商品出品</h1>
 
-  <%= form_with model: @item, local: true do |f| %>
+  <%= form_with model: @item_form, url: items_path, local: true do |f| %>
     <%# エラーメッセージ表示 %>
-    <%= render 'shared/error_messages', model: @item %>
+    <%= render 'shared/error_messages', model: @item_form %>
 
     <%# 商品の基本情報 %>  
     <div class="form-group">
